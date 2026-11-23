@@ -33,3 +33,6 @@ desktop.ini
 __pycache__/
 *.pyc
 
+
+Push-To-GitHub.bat
+
