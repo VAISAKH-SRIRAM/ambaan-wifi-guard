@@ -1,0 +1,31 @@
+# Ambaan Wi-Fi Guard - .gitignore
+
+# Runtime generated telemetry, reports & caches
+Reports/*.html
+Reports/*.txt
+Reports/*.csv
+!Reports/.gitkeep
+
+History/*.csv
+!History/.gitkeep
+
+MonitorData/*.json
+MonitorData/*.csv
+MonitorData/*.log
+MonitorData/Backups/
+!MonitorData/.gitkeep
+
+# Temporary & backup files
+*.tmp
+*.bak
+*~
+*.log
+Ambaan-WiFi-Guard-Backup/
+
+# OS and Editor metadata
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.vscode/
+.idea/
