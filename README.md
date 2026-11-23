@@ -9,8 +9,9 @@ A high-performance, local-first network monitoring, incident correlation, and in
 - [Overview](#overview)
 - [Multi-Platform Architecture](#multi-platform-architecture)
 - [Repository Structure](#repository-structure)
-- [Windows Deployment and Execution](#windows-deployment-and-execution)
-- [Ubuntu Linux Deployment and Execution](#ubuntu-linux-deployment-and-execution)
+- [Downloading and Extracting the Project](#downloading-and-extracting-the-project)
+- [Running on Windows (Step-by-Step)](#running-on-windows-step-by-step)
+- [Running on Ubuntu Linux (Step-by-Step)](#running-on-ubuntu-linux-step-by-step)
 - [Core Subsystems](#core-subsystems)
   - [1. Real-Time Host Telemetry and 802.11 Metrics](#1-real-time-host-telemetry-and-80211-metrics)
   - [2. Remote Server and Service Probing](#2-remote-server-and-service-probing)
@@ -124,67 +125,139 @@ ambaan-wifi-guard/
 
 ---
 
-## Windows Deployment and Execution
+## Downloading and Extracting the Project
 
-### System Requirements
-- Windows 10 or Windows 11 (64-bit recommended)
-- Windows PowerShell 5.1 (installed by default on Windows 10/11)
-- Active 802.11 Wi-Fi or Ethernet network interface
-- No administrator privileges required for core telemetry or diagnostics
+You can obtain the project either by downloading the repository ZIP file from GitHub or by cloning the repository using Git.
 
-### Quick Start
-1. Extract or clone the repository to your local drive.
-2. Open the `windows/` folder.
-3. Launch the required tool:
-   - **Desktop Floating Widget**: Double-click `Start-Floating-Widget.bat`
-   - **Comprehensive Diagnostic Analyzer**: Double-click `Run-WiFi-Analyzer.bat`
+### Option A: Download Repository ZIP (Recommended for most users)
 
-### Manual PowerShell Execution
-```powershell
-cd windows
-# Launch the floating desktop HUD
-powershell -ExecutionPolicy Bypass -File .\WiFi-Floating-Widget.ps1
+1. Navigate to the repository page on GitHub.
+2. Click the green **Code** button near the top right of the page.
+3. Select **Download ZIP** from the dropdown menu.
+4. Once downloaded, extract the archive:
+   - **On Windows**: Right-click the downloaded `.zip` file, select **Extract All...**, choose a destination directory (for example, `C:\Tools\ambaan-wifi-guard`), and click **Extract**.
+   - **On Ubuntu Linux**: Open your file manager, right-click the `.zip` file, and select **Extract Here**, or run the following in terminal:
+     ```bash
+     unzip ambaan-wifi-guard-main.zip -d ambaan-wifi-guard
+     cd ambaan-wifi-guard
+     ```
 
-# Execute a comprehensive network diagnostic sweep
-powershell -ExecutionPolicy Bypass -File .\WiFiNetworkAnalyzerPro.ps1
+### Option B: Clone via Git
+
+Open your terminal or command prompt and clone the repository:
+```bash
+git clone https://github.com/<your-username>/<your-repo-name>.git
+cd <your-repo-name>
 ```
+
+After extraction, you will see two platform folders:
+- `windows/`: Contains all files and launchers for Windows 10 and 11.
+- `ubuntu/`: Contains all scripts and launchers for Ubuntu / Debian Linux.
 
 ---
 
-## Ubuntu Linux Deployment and Execution
+## Running on Windows (Step-by-Step)
+
+### System Requirements
+- Windows 10 or Windows 11 (64-bit recommended)
+- Windows PowerShell 5.1 (installed by default on Windows 10 and 11)
+- Active Wi-Fi or Ethernet network connection
+- Standard user permissions (No administrator privileges required)
+
+### Step 1: Open the Windows Directory
+Navigate to the extracted repository folder and open the `windows/` directory in File Explorer:
+```
+ambaan-wifi-guard/windows/
+```
+
+### Step 2: Unblock Downloaded Scripts (If prompted by Windows)
+If Windows SmartScreen or file protection blocks downloaded scripts:
+1. Right-click `WiFi-Floating-Widget.ps1`, select **Properties**, check the **Unblock** box at the bottom, and click **OK**.
+2. Repeat for `WiFiNetworkAnalyzerPro.ps1` if needed.
+Alternatively, running through the included `.bat` files bypasses execution policy restrictions automatically.
+
+### Step 3: Launching the Applications
+
+#### Method 1: One-Click Launchers (Graphical)
+- **To launch the Desktop Floating Widget**:
+  Double-click `Start-Floating-Widget.bat`.
+  The dark Obsidian Glass HUD will appear at the top-right corner of your desktop, showing real-time Wi-Fi signal percentage, link speed, latency, host bandwidth, and server status. You can click and drag the widget anywhere on your screen.
+- **To run the Full Network Diagnostic Analyzer**:
+  Double-click `Run-WiFi-Analyzer.bat`.
+  A terminal window will open, perform automated latency, jitter, DNS, and server probes, build the network topology map, and automatically open an interactive offline HTML report in your default web browser.
+
+#### Method 2: PowerShell Terminal
+If you prefer running from PowerShell directly:
+```powershell
+cd windows
+
+# Launch the floating desktop widget:
+powershell -ExecutionPolicy Bypass -File .\WiFi-Floating-Widget.ps1
+
+# Run the comprehensive diagnostic analyzer:
+powershell -ExecutionPolicy Bypass -File .\WiFiNetworkAnalyzerPro.ps1
+```
+
+### Troubleshooting on Windows
+- If PowerShell reports that script execution is disabled on your machine, running with the `-ExecutionPolicy Bypass` flag as shown above allows the script to run safely for that session without modifying system-wide security policies.
+
+---
+
+## Running on Ubuntu Linux (Step-by-Step)
 
 ### System Requirements
 - Ubuntu 20.04 LTS, 22.04 LTS, 24.04 LTS, or Debian-based distributions
-- Python 3.8+ (standard in all modern Ubuntu distributions)
-- Standard network tools: `iproute2`, `iputils-ping`
-- For graphical desktop HUD: `python3-tk` (optional; falls back to live terminal TUI if absent)
+- Python 3.8 or newer (pre-installed on all modern Ubuntu systems)
+- Standard network utilities: `iproute2`, `iputils-ping`
+- For graphical desktop widget: `python3-tk` (optional; falls back to real-time Terminal HUD if absent)
 
-### Installation and Setup
-Open a terminal in the `ubuntu/` directory and execute:
+### Step 1: Open Terminal and Navigate to the Ubuntu Directory
+Open your terminal and change directory into the `ubuntu/` folder:
 ```bash
-cd ubuntu
+cd ambaan-wifi-guard/ubuntu
+```
+
+### Step 2: Grant Execution Permissions and Run Setup
+Run the environment setup script to ensure executable permissions and verify system packages:
+```bash
 chmod +x *.sh *.py
 ./setup.sh
 ```
 
-If graphical dependencies or utilities are missing, install them via `apt`:
+If any recommended system utilities are missing, install them with:
 ```bash
 sudo apt update
 sudo apt install -y python3 python3-tk iproute2 iputils-ping
 ```
 
-### Quick Start
-- **Desktop Floating Widget**:
-  ```bash
-  ./start-floating-widget.sh
-  ```
-  *Note: When run on a desktop environment with X11 or Wayland, a frameless draggable HUD will launch. When run over SSH or in a headless terminal, it automatically runs an interactive in-place Terminal HUD.*
+### Step 3: Launching the Applications
 
-- **Comprehensive Diagnostic Sweep**:
-  ```bash
-  ./run-wifi-analyzer.sh
-  ```
-  *Executes active probes, calculates RFC 3550 jitter, correlates incidents, generates a standalone Obsidian Glass HTML report in `Reports/`, and opens it in your default browser via `xdg-open`.*
+#### A. Running the Desktop Floating Widget
+To launch the real-time floating HUD:
+```bash
+./start-floating-widget.sh
+```
+- **On a Graphical Desktop (GNOME / X11 / Wayland)**:
+  A frameless Obsidian Glass widget appears on your screen showing the animated Dhamu character, active Wi-Fi signal, link rate, ping, jitter, host bandwidth, and server availability. You can click and drag the widget anywhere on your desktop.
+- **On Headless Servers or Remote SSH Sessions**:
+  If no graphical display is detected, Ambaan automatically switches to an in-place **Terminal TUI HUD** that continuously updates network telemetry directly in your console. Press `Ctrl+C` at any time to exit.
+
+#### B. Running the Comprehensive Diagnostic Analyzer
+To execute a complete network health check:
+```bash
+./run-wifi-analyzer.sh
+```
+What happens during execution:
+1. Detects primary network interface, active IP, default gateway, and Wi-Fi signal metrics.
+2. Measures gateway and internet round-trip time, packet loss, and RFC 3550 jitter.
+3. Probes mission-critical servers (ICMP, TCP ports, HTTP/HTTPS endpoints) and evaluates SLA ratios.
+4. Identifies potential ARP spoofing vs. mesh Wi-Fi roaming, and checks for IP conflicts.
+5. Measures host bandwidth throughput from `/proc/net/dev`.
+6. Generates a standalone, air-gapped HTML dossier in `Reports/` with an interactive vector topology map.
+7. Automatically opens the report in your default browser (using `xdg-open`).
+
+### Troubleshooting on Ubuntu
+- If `./start-floating-widget.sh` reports that Tkinter is not installed and you want the graphical floating window, run `sudo apt install -y python3-tk`. If you are over SSH, the Terminal HUD will run automatically without needing Tkinter.
 
 ---
 
